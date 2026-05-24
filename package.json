@@ -56,6 +56,7 @@
     "@dcloudio/uni-mp-xhs": "3.0.0-4080420251103001",
     "@dcloudio/uni-quickapp-webview": "3.0.0-4080420251103001",
     "@vue/compiler-sfc": "^3.4.21",
+    "cos-js-sdk-v5": "^1.10.1",
     "go-captcha-vue": "^2.0.6",
     "uview-plus": "^3.8.37",
     "vue": "^3.4.21",

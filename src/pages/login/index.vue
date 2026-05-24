@@ -5,16 +5,18 @@ import { useI18n } from 'vue-i18n'
 
 import { appAuthClient } from '@/api/appAuth'
 import { AppCaptchaOverlay } from '@/components/AppCaptcha'
+import { usePreferences } from '@/composables/usePreferences'
 import { useSession } from '@/composables/useSession'
 import { redirectToHome } from '@/router/guards'
 import type { AppLoginType, AppLoginTypeOption, AppSlideCaptchaChallenge } from '@/types/auth'
+import type { AppLocale } from '@/types/preferences'
 
 const { t } = useI18n()
 const authSession = useSession()
+const preferences = usePreferences()
 
-const loginTypes = ref<AppLoginTypeOption[]>([
-  { label: t('auth.loginTypes.password'), value: 'password' },
-])
+const currentLocale = computed(() => preferences.state.locale)
+const loginTypeValues = ref<AppLoginType[]>(['password'])
 const activeLoginType = ref<AppLoginType>('password')
 const showPassword = ref(false)
 const rememberAccount = ref(true)
@@ -31,6 +33,21 @@ const form = reactive({
   password: '',
   code: '',
 })
+
+const loginTypes = computed<AppLoginTypeOption[]>(() => {
+  currentLocale.value
+  return loginTypeValues.value.map((value) => ({
+    label: t(`auth.loginTypes.${value}`),
+    value,
+  }))
+})
+
+const localeOptions = computed<Array<{ label: string; value: AppLocale }>>(() => [
+  { label: t('mine.localeZh'), value: 'zh-CN' },
+  { label: t('mine.localeEn'), value: 'en-US' },
+])
+
+const passwordToggleText = computed(() => (showPassword.value ? t('common.hide') : t('common.show')))
 
 const activeTypeConfig = computed(() => ({
   label: t(`auth.loginTypes.${activeLoginType.value}`),
@@ -71,16 +88,23 @@ onShow(() => {
 async function loadLoginConfig() {
   try {
     const config = await appAuthClient.loginConfig()
-    if (config.login_type_arr.length) {
-      loginTypes.value = config.login_type_arr
-      activeLoginType.value = config.login_type_arr[0].value
+    const availableTypes = config.login_type_arr.map((item) => item.value)
+    if (availableTypes.length) {
+      loginTypeValues.value = availableTypes
+      if (!availableTypes.includes(activeLoginType.value)) {
+        activeLoginType.value = availableTypes[0]
+      }
     }
   } catch {
-    loginTypes.value = [{ label: t('auth.loginTypes.password'), value: 'password' }]
+    loginTypeValues.value = ['password']
+    activeLoginType.value = 'password'
   }
 }
 
 function switchLoginType(type: AppLoginType) {
+  if (!loginTypeValues.value.includes(type)) {
+    return
+  }
   activeLoginType.value = type
   form.password = ''
   form.code = ''
@@ -101,6 +125,14 @@ function ensureFormReady(): boolean {
   }
   uni.showToast({ title: t('auth.required'), icon: 'none' })
   return false
+}
+
+function setLocale(locale: AppLocale): void {
+  preferences.setLocale(locale)
+}
+
+function togglePasswordVisibility(): void {
+  showPassword.value = !showPassword.value
 }
 
 async function handleSendCode() {
@@ -208,12 +240,29 @@ async function confirmCaptchaLogin() {
     <view class="content-wrapper">
       <view class="form-section login-mobile-sheet">
         <view class="login-mobile-brand">
-          <view class="logo-box">
-            <text class="logo-mark">Z</text>
+          <view class="brand-group">
+            <view class="logo-box">
+              <text class="logo-mark">Z</text>
+            </view>
+            <view class="brand-info">
+              <text class="brand-name">{{ t('auth.brandTitle') }}</text>
+              <text class="brand-tagline">{{ t('auth.brandTagline') }}</text>
+            </view>
           </view>
-          <view class="brand-info">
-            <text class="brand-name">{{ t('auth.brandTitle') }}</text>
-            <text class="brand-tagline">{{ t('auth.brandTagline') }}</text>
+
+          <view class="language-switch">
+            <view class="language-switch__label">{{ t('mine.language') }}</view>
+            <view class="language-switch__row">
+              <view
+                v-for="item in localeOptions"
+                :key="item.value"
+                class="language-switch__chip"
+                :class="{ active: currentLocale === item.value }"
+                @click="setLocale(item.value)"
+              >
+                {{ item.label }}
+              </view>
+            </view>
           </view>
         </view>
 
@@ -253,12 +302,12 @@ async function confirmCaptchaLogin() {
                 v-model="form.password"
                 class="field-input password-input"
                 :type="showPassword ? 'text' : 'password'"
-                password
+                :password="!showPassword"
                 :placeholder="t('auth.passwordPlaceholder')"
                 placeholder-class="field-placeholder"
               />
-              <text class="password-toggle" @click="showPassword = !showPassword">
-                {{ showPassword ? 'Hide' : 'Show' }}
+              <text class="password-toggle" @click="togglePasswordVisibility()">
+                {{ passwordToggleText }}
               </text>
             </view>
           </view>
@@ -418,10 +467,20 @@ async function confirmCaptchaLogin() {
 
 .login-mobile-brand {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 20rpx;
+  justify-content: space-between;
+  gap: 16rpx;
   padding: 24rpx 28rpx 20rpx;
   border-bottom: 1rpx solid rgba(15, 23, 42, 0.06);
+}
+
+.brand-group {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  min-width: 0;
+  flex: 1 1 360rpx;
 }
 
 .logo-box {
@@ -445,6 +504,7 @@ async function confirmCaptchaLogin() {
   display: flex;
   flex-direction: column;
   gap: 4rpx;
+  min-width: 0;
 }
 
 .brand-name {
@@ -456,6 +516,51 @@ async function confirmCaptchaLogin() {
 .brand-tagline {
   color: #64748b;
   font-size: 22rpx;
+}
+
+.language-switch {
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+  flex-shrink: 0;
+  padding: 10rpx 12rpx;
+  border-radius: 22rpx;
+  background: rgba(15, 23, 42, 0.05);
+}
+
+.language-switch__label {
+  color: #64748b;
+  font-size: 20rpx;
+  font-weight: 700;
+  text-align: right;
+}
+
+.language-switch__row {
+  display: flex;
+  gap: 8rpx;
+}
+
+.language-switch__chip {
+  min-width: 92rpx;
+  padding: 12rpx 18rpx;
+  border-radius: 16rpx;
+  color: #64748b;
+  background: rgba(255, 255, 255, 0.9);
+  font-size: 22rpx;
+  font-weight: 700;
+  text-align: center;
+  transition:
+    color 0.18s ease,
+    background-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
+}
+
+.language-switch__chip.active {
+  color: #1d4ed8;
+  background: #fff;
+  box-shadow: 0 8rpx 22rpx rgba(15, 23, 42, 0.08);
+  transform: translateY(-1rpx);
 }
 
 .login-form-card {
@@ -610,6 +715,20 @@ async function confirmCaptchaLogin() {
 .agreement-link {
   color: #409eff;
   font-weight: 700;
+}
+
+@media (max-width: 480px) {
+  .login-mobile-brand {
+    align-items: flex-start;
+  }
+
+  .language-switch {
+    width: 100%;
+  }
+
+  .language-switch__label {
+    text-align: left;
+  }
 }
 
 </style>

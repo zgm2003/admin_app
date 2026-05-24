@@ -140,6 +140,30 @@ Authorization: Bearer <token>
 
 Response `data`: `null`。
 
+
+## Profile
+
+```text
+GET /api/app/v1/profile
+PUT /api/app/v1/profile
+Authorization: Bearer <token>
+```
+
+规则：`我的` tab 只读取资料摘要用于账号总览；头像上传、昵称、性别、生日、地址、简介编辑在 `pages/profile/edit` 独立页面完成。
+
+## Upload token
+
+```text
+POST /api/app/v1/upload-tokens
+Authorization: Bearer <token>
+```
+
+规则：头像上传走当前 COS-only upload token runtime，前端用 `cos-js-sdk-v5` 直传，不走 Vite 反代。
+
+## Settings
+
+设置是前端本机偏好页：语言、白天/黑夜模式持久化在 `admin_app:locale` / `admin_app:theme`。清理缓存只清 `admin_app:cache:` 和 `admin_app:tmp:` 前缀，不能删除 `access_token`、`current_user`、语言和主题偏好。
+
 ## Headers
 
 `src/api/http.ts` 统一附加：

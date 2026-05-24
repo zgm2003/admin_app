@@ -33,14 +33,17 @@ describe('app routing baseline', () => {
     expect(existsSync(join(process.cwd(), 'src/shim-uni.d.ts'))).toBe(true)
   })
 
-  it('keeps login as the entry page and tabbar limited to home/mine', () => {
+  it('keeps login as the entry page, tabbar limited to home/mine, and detail pages outside tabbar', () => {
     const pagesConfig = readPagesConfig()
+    const pagePaths = pagesConfig.pages.map((page) => page.path)
 
-    expect(pagesConfig.pages.map((page) => page.path)).toEqual([
+    expect(pagePaths.slice(0, 3)).toEqual([
       'pages/login/index',
       'pages/home/index',
       'pages/mine/index',
     ])
+    expect(pagePaths).toContain('pages/profile/edit')
+    expect(pagePaths).toContain('pages/settings/index')
     expect(pagesConfig.tabBar.list).toEqual([
       { pagePath: 'pages/home/index', text: '首页' },
       { pagePath: 'pages/mine/index', text: '我的' },

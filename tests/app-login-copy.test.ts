@@ -13,6 +13,9 @@ describe('app login page mobile contract', () => {
     const captchaComponent = readProjectFile('src/components/AppCaptcha/src/AppSlideCaptcha.vue')
 
     expect(loginPage).toContain('login-mobile-sheet')
+    expect(loginPage).toContain('language-switch')
+    expect(loginPage).toContain('preferences.setLocale')
+    expect(loginPage).toContain('loginTypeValues')
     expect(loginPage).toContain('method-tabs')
     expect(loginPage).toContain('captcha-overlay')
     expect(loginPage).toContain('agreement-row')
@@ -20,6 +23,8 @@ describe('app login page mobile contract', () => {
     expect(captchaComponent).toContain('GoCaptchaSlide')
     expect(captchaComponent).toContain("from 'go-captcha-vue'")
     expect(loginPage).toContain('x: Math.round(captchaSliderX.value)')
+    expect(loginPage).toContain("t('common.hide')")
+    expect(loginPage).toContain("t('common.show')")
     expect(loginPage).not.toContain('<slider')
     expect(loginPage).not.toContain('captchaSliderMax')
   })

@@ -17,6 +17,18 @@
 			"style": {
 				"navigationStyle": "custom"
 			}
+		},
+		{
+			"path": "pages/profile/edit",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/settings/index",
+			"style": {
+				"navigationStyle": "custom"
+			}
 		}
 	],
 	"easycom": {
@@ -28,9 +40,9 @@
 	},
 	"tabBar": {
 		"color": "#7F97AF",
-		"selectedColor": "#57D2FF",
-		"backgroundColor": "#09131D",
-		"borderStyle": "black",
+		"selectedColor": "#2563EB",
+		"backgroundColor": "#ffffff",
+		"borderStyle": "white",
 		"list": [
 			{
 				"pagePath": "pages/home/index",
@@ -43,10 +55,10 @@
 		]
 	},
 	"globalStyle": {
-		"navigationBarTextStyle": "white",
+		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "智澜 Admin App",
-		"navigationBarBackgroundColor": "#09131D",
-		"backgroundColor": "#06111A",
+		"navigationBarBackgroundColor": "#ffffff",
+		"backgroundColor": "#f6f8fc",
 		"backgroundTextStyle": "dark"
 	}
 }

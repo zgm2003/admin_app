@@ -1,5 +1,5 @@
 import { APP_API_BASE_URL } from '@/config/env'
-import { ACCESS_TOKEN_STORAGE_KEY } from '@/constants/storage'
+import { ACCESS_TOKEN_STORAGE_KEY, APP_LOCALE_STORAGE_KEY } from '@/constants/storage'
 import type { ApiResponse, RequestData, RequestMethod } from '@/types/api'
 
 export interface StorageAdapter {
@@ -51,6 +51,15 @@ function buildRequestUrl(path: string): string {
   return `${APP_API_BASE_URL}${normalizedPath}`
 }
 
+function getRequestLocale(): 'zh-CN' | 'en-US' {
+  try {
+    const locale = uni.getStorageSync(APP_LOCALE_STORAGE_KEY)
+    return locale === 'en-US' ? 'en-US' : 'zh-CN'
+  } catch {
+    return 'zh-CN'
+  }
+}
+
 function normalizeResponse<T>(payload: unknown): ApiResponse<T> {
   if (!payload || typeof payload !== 'object') {
     throw new ApiResponseError(500, '响应格式错误')
@@ -65,7 +74,7 @@ function normalizeResponse<T>(payload: unknown): ApiResponse<T> {
 export function appRequest<T>(options: AppRequestOptions): Promise<T> {
   const token = getAuthToken()
   const header: Record<string, string> = {
-    'Accept-Language': 'zh-CN',
+    'Accept-Language': getRequestLocale(),
     platform: 'app',
     ...(options.header ?? {}),
   }

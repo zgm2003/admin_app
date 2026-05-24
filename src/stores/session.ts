@@ -128,11 +128,21 @@ export function createSessionController(deps: SessionControllerDeps) {
     }
   }
 
+  function updateUser(user: AppUser): void {
+    if (!state.token) {
+      return
+    }
+    state.user = user
+    state.status = 'authenticated'
+    deps.storage.setUser(user)
+  }
+
   return {
     state: readonly(state),
     isAuthenticated,
     hydrate,
     login,
     logout,
+    updateUser,
   }
 }
