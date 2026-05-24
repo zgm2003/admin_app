@@ -1,6 +1,12 @@
 import { computed, reactive, readonly } from 'vue'
 
-import type { AppLoginPayload, AppLoginResult } from '@/types/auth'
+import type {
+  AppLoginConfig,
+  AppLoginPayload,
+  AppLoginResult,
+  AppSendCodePayload,
+  AppSlideCaptchaChallenge,
+} from '@/types/auth'
 import type { AppUser } from '@/types/user'
 
 export type SessionStatus = 'checking' | 'guest' | 'authenticated'
@@ -14,6 +20,9 @@ export interface SessionStorageAdapter {
 }
 
 export interface AppAuthClient {
+  loginConfig?(): Promise<AppLoginConfig>
+  captcha?(): Promise<AppSlideCaptchaChallenge>
+  sendCode?(payload: AppSendCodePayload): Promise<void>
   login(payload: AppLoginPayload): Promise<AppLoginResult>
   me(): Promise<AppUser>
   logout(): Promise<void>

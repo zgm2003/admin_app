@@ -1,4 +1,4 @@
-const DEFAULT_APP_API_BASE_URL = '/api/app/v1'
+const DEFAULT_APP_API_BASE_URL = 'http://127.0.0.1:8080/api/app/v1'
 
 function trimTrailingSlash(value: string): string {
   return value.replace(/\/+$/, '')

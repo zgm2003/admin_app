@@ -65,7 +65,13 @@ describe('session controller', () => {
     }
     const session = createSessionController({ client, storage })
 
-    await session.login({ account: '15671628271', password: '123456' })
+    await session.login({
+      login_type: 'password',
+      login_account: '15671628271',
+      password: '123456',
+      captcha_id: 'captcha-id',
+      captcha_answer: { x: 120, y: 80 },
+    })
 
     expect(storage.getToken()).toBe('new-token')
     expect(storage.getUser()).toEqual(user)
