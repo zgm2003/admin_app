@@ -4,6 +4,7 @@ import { onLoad, onShow } from '@dcloudio/uni-app'
 import { useI18n } from 'vue-i18n'
 
 import { appAuthClient } from '@/api/appAuth'
+import { AppCaptchaOverlay } from '@/components/AppCaptcha'
 import { useSession } from '@/composables/useSession'
 import { redirectToHome } from '@/router/guards'
 import type { AppLoginType, AppLoginTypeOption, AppSlideCaptchaChallenge } from '@/types/auth'
@@ -23,6 +24,7 @@ const captchaLoading = ref(false)
 const captchaChallenge = shallowRef<AppSlideCaptchaChallenge | null>(null)
 const captchaSliderX = ref(0)
 const sendCodeLoading = ref(false)
+const CAPTCHA_MIN_MOVE_OFFSET = 16
 
 const form = reactive({
   loginAccount: '',
@@ -53,25 +55,6 @@ const canSubmit = computed(() => {
   }
   return form.code.trim().length > 0
 })
-
-const captchaSliderMax = computed(() => {
-  const challenge = captchaChallenge.value
-  if (!challenge) {
-    return 100
-  }
-  return Math.max(0, challenge.image_width - challenge.tile_width)
-})
-
-const captchaTileStyle = computed(() => ({
-  top: `${captchaChallenge.value?.tile_y ?? 0}px`,
-  left: `${captchaSliderX.value}px`,
-}))
-
-const captchaTrackStyle = computed(() => ({
-  width: `${captchaSliderMax.value > 0
-    ? Math.min(100, Math.max(0, (captchaSliderX.value / captchaSliderMax.value) * 100))
-    : 0}%`,
-}))
 
 onLoad(() => {
   void loadLoginConfig()
@@ -145,6 +128,7 @@ async function openCaptcha() {
   try {
     const challenge = await appAuthClient.captcha()
     captchaChallenge.value = challenge
+    captchaSliderX.value = challenge.tile_x
   } catch (error) {
     captchaVisible.value = false
     const message = error instanceof Error ? error.message : t('auth.captchaLoadFailed')
@@ -186,7 +170,7 @@ async function confirmCaptchaLogin() {
     uni.showToast({ title: t('auth.captchaLoadFailed'), icon: 'none' })
     return
   }
-  if (captchaSliderX.value <= 0) {
+  if (captchaSliderX.value < challenge.tile_x + CAPTCHA_MIN_MOVE_OFFSET) {
     uni.showToast({ title: t('auth.captchaRequired'), icon: 'none' })
     return
   }
@@ -332,40 +316,17 @@ async function confirmCaptchaLogin() {
       </view>
     </view>
 
-    <view v-if="captchaVisible" class="captcha-overlay" @click.self="captchaVisible = false">
-      <view class="captcha-panel">
-        <text class="captcha-title">{{ t('auth.captchaTitle') }}</text>
-        <text class="captcha-hint">{{ t('auth.captchaHint') }}</text>
-        <view class="captcha-stage">
-          <view v-if="captchaLoading || !captchaChallenge" class="captcha-loading">
-            <text>{{ t('auth.captchaLoading') }}</text>
-          </view>
-          <template v-else>
-            <image class="captcha-master" :src="captchaChallenge.master_image" mode="widthFix" />
-            <image
-              class="captcha-tile"
-              :src="captchaChallenge.tile_image"
-              mode="widthFix"
-              :style="captchaTileStyle"
-            />
-          </template>
-        </view>
-        <view class="slider-track">
-          <view class="slider-fill" :style="captchaTrackStyle" />
-          <slider
-            v-model="captchaSliderX"
-            min="0"
-            :max="captchaSliderMax"
-            activeColor="#409eff"
-            backgroundColor="#dbe7f6"
-          />
-        </view>
-        <view class="captcha-actions">
-          <button class="captcha-secondary" @click="openCaptcha">{{ t('auth.captchaRefresh') }}</button>
-          <button class="captcha-primary" @click="confirmCaptchaLogin">{{ t('auth.captchaConfirm') }}</button>
-        </view>
-      </view>
-    </view>
+    <AppCaptchaOverlay
+      v-model="captchaVisible"
+      class="captcha-overlay"
+      :challenge="captchaChallenge"
+      :slider-x="captchaSliderX"
+      :loading="captchaLoading"
+      :verifying="authSession.state.loading"
+      @update:slider-x="captchaSliderX = $event"
+      @refresh="openCaptcha"
+      @complete="confirmCaptchaLogin"
+    />
   </view>
 </template>
 
@@ -651,104 +612,4 @@ async function confirmCaptchaLogin() {
   font-weight: 700;
 }
 
-.captcha-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 50;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 32rpx;
-  background: rgba(15, 23, 42, 0.48);
-}
-
-.captcha-panel {
-  width: 100%;
-  max-width: 680rpx;
-  padding: 30rpx;
-  border-radius: 28rpx;
-  background: #fff;
-  box-shadow: 0 32rpx 90rpx rgba(15, 23, 42, 0.28);
-}
-
-.captcha-title {
-  color: #0f172a;
-  font-size: 30rpx;
-  font-weight: 900;
-}
-
-.captcha-hint {
-  margin-top: 8rpx;
-  color: #64748b;
-  font-size: 23rpx;
-}
-
-.captcha-stage {
-  position: relative;
-  min-height: 320rpx;
-  margin-top: 22rpx;
-  overflow: hidden;
-  border-radius: 18rpx;
-  background: #eef4fb;
-}
-
-.captcha-loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 320rpx;
-  color: #64748b;
-}
-
-.captcha-master {
-  width: 100%;
-}
-
-.captcha-tile {
-  position: absolute;
-  width: 110rpx;
-  transform: translateX(-50%);
-}
-
-.slider-track {
-  position: relative;
-  margin: 24rpx 0 18rpx;
-  border-radius: 999rpx;
-  background: #eef4fb;
-}
-
-.slider-fill {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  border-radius: 999rpx;
-  background: rgba(64, 158, 255, 0.12);
-}
-
-.captcha-actions {
-  display: flex;
-  gap: 16rpx;
-}
-
-.captcha-secondary,
-.captcha-primary {
-  flex: 1;
-  height: 76rpx;
-  border: 0;
-  border-radius: 18rpx;
-  font-size: 26rpx;
-  font-weight: 800;
-  line-height: 76rpx;
-}
-
-.captcha-secondary {
-  color: #2563eb;
-  background: #eff6ff;
-}
-
-.captcha-primary {
-  color: #fff;
-  background: linear-gradient(135deg, #409eff 0%, #2563eb 100%);
-}
 </style>

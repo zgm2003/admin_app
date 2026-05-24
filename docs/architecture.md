@@ -48,9 +48,9 @@ src/locales/*          # 可见文案
 
 ## UI 选型
 
-采用 `uview-plus` + UniApp 原生组件，原因：它适合 App/H5/小程序多端基线。当前实现通过 easycom 按需引入组件，并只安装本地 `$u` runtime，不使用 `uview-plus` 全量 plugin install。
+采用 `uview-plus` + UniApp 原生组件作为 App/H5/小程序多端基线。当前实现通过 easycom 按需引入组件，并只安装本地 `$u` runtime，不使用 `uview-plus` 全量 plugin install。
 
-登录页视觉参考 PC 后台登录页的移动端结构：背景氛围层、mobile brand header、白色 mobile sheet、登录方式 tabs、协议勾选和 captcha overlay。但实现保持 UniApp-native，不直接搬 Element Plus / go-captcha-vue。
+登录页视觉参考 PC 后台登录页的移动端结构：背景氛围层、mobile brand header、白色 mobile sheet、登录方式 tabs、协议勾选和 captcha overlay。slide captcha 的内层验证器复用 `go-captcha-vue` 官方 `Slide` 组件和样式，不再手写 UniApp slider。
 
 ## 验证策略
 

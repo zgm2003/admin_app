@@ -10,13 +10,18 @@ function readProjectFile(path: string): string {
 describe('app login page mobile contract', () => {
   it('keeps the login page aligned with the PC mobile login structure', () => {
     const loginPage = readProjectFile('src/pages/login/index.vue')
+    const captchaComponent = readProjectFile('src/components/AppCaptcha/src/AppSlideCaptcha.vue')
 
     expect(loginPage).toContain('login-mobile-sheet')
     expect(loginPage).toContain('method-tabs')
     expect(loginPage).toContain('captcha-overlay')
     expect(loginPage).toContain('agreement-row')
-    expect(loginPage).toContain('captchaSliderMax')
+    expect(loginPage).toContain('AppCaptchaOverlay')
+    expect(captchaComponent).toContain('GoCaptchaSlide')
+    expect(captchaComponent).toContain("from 'go-captcha-vue'")
     expect(loginPage).toContain('x: Math.round(captchaSliderX.value)')
+    expect(loginPage).not.toContain('<slider')
+    expect(loginPage).not.toContain('captchaSliderMax')
   })
 
   it('keeps login copy in both locales for visible mobile auth UI', () => {
