@@ -1,13 +1,29 @@
 <script setup lang="ts">
-import { onLaunch, onShow, onHide } from "@dcloudio/uni-app";
+import { onLaunch } from '@dcloudio/uni-app'
+
+import { session } from '@/composables/useSession'
+
 onLaunch(() => {
-  console.log("App Launch");
-});
-onShow(() => {
-  console.log("App Show");
-});
-onHide(() => {
-  console.log("App Hide");
-});
+  void session.hydrate()
+})
 </script>
-<style></style>
+
+<style>
+page {
+  background:
+    radial-gradient(circle at top, rgba(77, 166, 255, 0.18), transparent 34%),
+    linear-gradient(180deg, #06111a 0%, #081722 52%, #09131d 100%);
+  color: #eef6ff;
+  font-family:
+    'PingFang SC',
+    'Hiragino Sans GB',
+    'Microsoft YaHei',
+    sans-serif;
+}
+
+view,
+text,
+input {
+  box-sizing: border-box;
+}
+</style>
