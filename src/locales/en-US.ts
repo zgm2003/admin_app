@@ -12,6 +12,7 @@ export default {
     sending: 'Sending...',
     show: 'Show',
     hide: 'Hide',
+    cancel: 'Cancel',
   },
   auth: {
     loginTitle: 'Welcome back',
@@ -112,10 +113,24 @@ export default {
     detailAddress: 'Detail address',
     detailAddressPlaceholder: 'Enter detail address',
     avatarUpload: 'Upload avatar',
-    uploadingAvatar: 'Uploading avatar...',
     avatarUploadHint: 'Tap to choose an image. It will upload through the current COS configuration.',
-    avatarUploadSuccess: 'Avatar uploaded',
-    avatarUploadFailed: 'Avatar upload failed',
+  },
+
+  upload: {
+    permissionTitle: 'Permission required',
+    permissionConfirm: 'Continue',
+    cameraPermissionDesc: 'Camera access is required to take a photo for upload.',
+    albumPermissionDesc: 'Photo library access is required to choose an image for upload.',
+    permissionDenied: 'Permission was not granted. Unable to choose a file.',
+    chooseSource: 'Choose source',
+    chooseAlbum: 'Photo library',
+    chooseCamera: 'Camera',
+    replace: 'Replace',
+    mediaUpload: 'Upload file',
+    mediaUploadHint: 'Tap to choose a file. It will upload through the current COS configuration.',
+    uploading: 'Uploading...',
+    uploadSuccess: 'Upload completed',
+    uploadFailed: 'Upload failed',
   },
 
   settings: {

@@ -21,7 +21,9 @@ pages/login/index.vue  -> appAuthClient.loginConfig/captcha/sendCode
 pages/login/index.vue  -> useSession.login -> appAuthClient.login -> POST /auth/login
 pages/home/index.vue   -> requireAuthenticatedPage -> session.state.user
 pages/mine/index.vue   -> 账号总览 + 修改资料/设置入口 + logout
-pages/profile/edit.vue -> appProfileClient.profile/updateProfile + AppAvatarUploader
+pages/profile/edit.vue -> appProfileClient.profile/updateProfile + AppMediaUploader
+AppMediaUploader -> App permission preflight on APP-PLUS, no native permission preflight on H5
+AppMediaUploader -> /api/app/v1/upload-tokens + COS-only upload runtime
 pages/settings/index.vue -> usePreferences language/theme + local cache management
 ```
 
@@ -52,7 +54,15 @@ src/locales/*          # 可见文案
 
 ## UI 选型
 
-采用 `uview-plus` + UniApp 原生组件作为 App/H5/小程序多端基线。当前实现通过 easycom 按需引入组件，并只安装本地 `$u` runtime，不使用 `uview-plus` 全量 plugin install。
+采用 `uview-plus` + UniApp 原生组件作为 H5 + App 基线，不做小程序。当前实现通过 easycom 按需引入组件，并只安装本地 `$u` runtime，不使用 `uview-plus` 全量 plugin install。
+
+## 上传平台规则
+
+上传只支持 H5 + App，不做小程序。
+
+`AppMediaUploader` 是 App 侧共享上传组件。它可以使用 `uview-plus` 的 `up-upload` 做移动端预览和选择 UI，但不使用 `up-upload` 的 `autoUpload`；真实上传继续走 `/api/app/v1/upload-tokens` 和项目 COS-only runtime。
+
+H5 不做 native permission preflight，由浏览器文件选择器接管。App 打开相册或相机前必须先检查是否已授权；已授权直接打开选择器，未授权或未知状态才展示用途说明并请求对应权限。权限拒绝时不打开选择器、不请求 upload token、不改变表单值。`manifest.json` 必须声明 Android CAMERA/READ_MEDIA_IMAGES/READ_MEDIA_VIDEO/READ_EXTERNAL_STORAGE 和 iOS NSCameraUsageDescription/NSPhotoLibraryUsageDescription。
 
 登录页视觉参考 PC 后台登录页的移动端结构：背景氛围层、mobile brand header、白色 mobile sheet、登录方式 tabs、协议勾选和 captcha overlay。slide captcha 的内层验证器复用 `go-captcha-vue` 官方 `Slide` 组件和样式，不再手写 UniApp slider。
 
@@ -63,5 +73,6 @@ src/locales/*          # 可见文案
 ```text
 Vitest：锁 API 解析、app-auth 调用、session controller、偏好/缓存 controller、后端 base URL 不走 Vite proxy、登录页结构文案、Mine hub 与独立资料/设置页结构。
 vue-tsc：锁 TypeScript 和 SFC 类型。
-build:h5：先证明 H5 构建链路可跑；App 真机包作为后续发布切片。
+build:h5：证明浏览器/H5 构建链路可跑。
+build:app：证明 UniApp App target 可编译；真机权限流仍需要后续设备 smoke。
 ```

@@ -12,6 +12,7 @@ export default {
     sending: '发送中...',
     show: '显示',
     hide: '隐藏',
+    cancel: '取消',
   },
   auth: {
     loginTitle: '欢迎回来',
@@ -112,10 +113,24 @@ export default {
     detailAddress: '详细地址',
     detailAddressPlaceholder: '请输入详细地址',
     avatarUpload: '上传头像',
-    uploadingAvatar: '头像上传中...',
     avatarUploadHint: '点击选择图片，将上传到当前 COS 配置。',
-    avatarUploadSuccess: '头像已上传',
-    avatarUploadFailed: '头像上传失败',
+  },
+
+  upload: {
+    permissionTitle: '需要访问权限',
+    permissionConfirm: '继续',
+    cameraPermissionDesc: '需要相机权限用于拍照上传。',
+    albumPermissionDesc: '需要相册权限用于选择图片上传。',
+    permissionDenied: '未获得权限，无法选择文件',
+    chooseSource: '选择上传来源',
+    chooseAlbum: '从相册选择',
+    chooseCamera: '拍照上传',
+    replace: '更换',
+    mediaUpload: '上传文件',
+    mediaUploadHint: '点击选择文件，将上传到当前 COS 配置。',
+    uploading: '上传中...',
+    uploadSuccess: '上传成功',
+    uploadFailed: '上传失败',
   },
 
   settings: {

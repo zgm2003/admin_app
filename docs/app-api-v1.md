@@ -158,7 +158,7 @@ POST /api/app/v1/upload-tokens
 Authorization: Bearer <token>
 ```
 
-规则：头像上传走当前 COS-only upload token runtime，前端用 `cos-js-sdk-v5` 直传，不走 Vite 反代。
+规则：头像等 App 侧媒体上传走当前 COS-only upload token runtime。前端统一通过 `AppMediaUploader` 选择文件并上传；H5 由浏览器文件选择器接管权限，App 在打开相册/相机前必须先走权限前置。前端用 `cos-js-sdk-v5` 直传，不走 Vite 反代，不使用 uview-plus `autoUpload`。App 本地路径必须先通过 `plus.io` 读取成 Blob，获取 upload token 后、PUT COS 前再按 `token.rule` 做一次大小和后缀校验。
 
 ## Settings
 

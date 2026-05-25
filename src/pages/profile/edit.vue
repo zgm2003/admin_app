@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue'
+import { computed, reactive, ref, shallowRef } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
 import { useI18n } from 'vue-i18n'
 
 import { appProfileClient } from '@/api/appProfile'
-import { AppAvatarUploader } from '@/components/AppUpload'
+import { AppMediaUploader } from '@/components/AppMediaUploader'
 import { useSession } from '@/composables/useSession'
 import { requireAuthenticatedPage } from '@/router/guards'
 import type { AppAddressOption, AppDictOption, AppProfile, AppProfileResponse } from '@/types/user'
@@ -24,8 +24,8 @@ const { t } = useI18n()
 const authSession = useSession()
 
 const currentUser = computed(() => authSession.state.user)
-const loadingProfile = ref(false)
-const savingProfile = ref(false)
+const loadingProfile = shallowRef(false)
+const savingProfile = shallowRef(false)
 const sexOptions = ref<AppDictOption<number>[]>([])
 const addressTree = ref<AppAddressOption[]>([])
 
@@ -211,7 +211,14 @@ function readPickerIndex(event: PickerChangeEvent): number {
         <text class="section-desc">{{ t('mine.editProfileDesc') }}</text>
       </view>
 
-      <AppAvatarUploader v-model="profileForm.avatar" />
+      <AppMediaUploader
+        v-model="profileForm.avatar"
+        folder="avatars"
+        media-kind="image"
+        :source-types="['album', 'camera']"
+        :title="t('mine.avatarUpload')"
+        :hint="t('mine.avatarUploadHint')"
+      />
 
       <view class="field-grid">
         <view class="field">
