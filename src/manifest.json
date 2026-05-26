@@ -17,7 +17,13 @@
             "delay" : 0
         },
         /* 模块配置 */
-        "modules" : {},
+        "modules" : {
+            "Barcode" : {},
+            "Camera" : {},
+            "Payment" : {},
+            "VideoPlayer" : {},
+            "Record" : {}
+        },
         /* 应用发布信息 */
         "distribute" : {
             /* android打包配置 */
@@ -37,7 +43,25 @@
                 }
             },
             /* SDK配置 */
-            "sdkConfigs" : {}
+            "sdkConfigs" : {
+                "payment" : {
+                    "alipay" : {
+                        "__platform__" : [ "ios", "android" ]
+                    }
+                },
+                "push" : {
+                    "unipush" : {
+                        "version" : "2",
+                        "offline" : false
+                    }
+                },
+                "share" : {
+                    "weixin" : {
+                        "appid" : "",
+                        "UniversalLinks" : ""
+                    }
+                }
+            }
         }
     },
     "uniStatistics" : {

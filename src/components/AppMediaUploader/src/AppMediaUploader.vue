@@ -214,16 +214,18 @@ function resolveUploadErrorMessage(error: unknown): string {
         :disabled="isUploadDisabled"
         @after-read="handleAfterRead"
         @delete="handleDelete"
-      />
-
-      <view
-        v-if="!hasFile && !pickerOpen"
-        class="app-media-uploader__trigger"
-        :class="{ 'is-disabled': isTriggerDisabled }"
-        @tap.stop.prevent="handleChoose"
       >
-        <text class="app-media-uploader__plus">+</text>
-      </view>
+        <template #trigger>
+          <view
+            v-if="!hasFile && !pickerOpen"
+            class="app-media-uploader__trigger"
+            :class="{ 'is-disabled': isTriggerDisabled }"
+            @tap.stop.prevent="handleChoose"
+          >
+            <text class="app-media-uploader__plus">+</text>
+          </view>
+        </template>
+      </up-upload>
     </view>
 
     <view class="app-media-uploader__copy">
