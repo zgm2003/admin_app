@@ -1,5 +1,5 @@
 import { i18n } from '@/i18n'
-import { createAppPreferencesController } from '@/stores/preferences'
+import { createAppPreferencesController } from '@/store/preferences'
 import type { AppLocale, AppThemeMode } from '@/types/preferences'
 
 function getStoredValue(key: string): string | null {

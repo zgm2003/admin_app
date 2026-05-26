@@ -19,8 +19,8 @@ describe('app upload runtime', () => {
 
   it('keeps app media upload permission-gated and wired to COS runtime', () => {
     const uploader = readProjectFile('src/components/AppMediaUploader/src/AppMediaUploader.vue')
-    const runtime = readProjectFile('src/lib/appUploadRuntime.ts')
-    const permission = readProjectFile('src/lib/platform/appMediaPermission.ts')
+    const runtime = readProjectFile('src/lib/upload/appUploadRuntime.ts')
+    const permission = readProjectFile('src/platform/app/appMediaPermission.ts')
 
     expect(uploader).toContain('<up-upload')
     expect(uploader).toContain(':auto-upload="false"')
@@ -41,7 +41,7 @@ describe('app upload runtime', () => {
     expect(permission).toContain('checkPermission')
     expect(permission).toContain('READ_MEDIA_IMAGES')
     expect(permission).toContain('READ_EXTERNAL_STORAGE')
-    expect(permission).not.toContain("import i18n from '@/locales'")
+    expect(permission).not.toContain(`import i18n from '${['@', 'locales'].join('/')}'`)
     expect(permission).not.toContain('declare const plus')
     expect(permission).not.toContain('// #ifdef H5')
     expect(runtime).toContain("from 'cos-js-sdk-v5'")

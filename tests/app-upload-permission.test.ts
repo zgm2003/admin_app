@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { resolveAppMediaPermissionPlan } from '../src/lib/platform/appMediaPermission'
+import { resolveAppMediaPermissionPlan } from '../src/platform/app/appMediaPermission'
 
 describe('app media upload permissions', () => {
   it('does not request native permissions on H5', () => {

@@ -1,5 +1,5 @@
-import { APP_API_BASE_URL } from '@/config/env'
-import { ACCESS_TOKEN_STORAGE_KEY, APP_LOCALE_STORAGE_KEY } from '@/constants/storage'
+import { APP_API_BASE_URL } from './env'
+import { ACCESS_TOKEN_STORAGE_KEY, APP_LOCALE_STORAGE_KEY } from '@/enums/storage'
 import type { ApiResponse, RequestData, RequestMethod } from '@/types/api'
 
 export interface StorageAdapter {
@@ -102,6 +102,5 @@ export function appRequest<T>(options: AppRequestOptions): Promise<T> {
     })
   })
 }
-
 
 

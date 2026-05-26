@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 
-import { createUViewRuntime, installUViewRuntime } from '../src/plugins/uview-runtime'
+import { createUViewRuntime, installUViewRuntime } from '../src/platform/uview/runtime'
 
 describe('uview runtime bootstrap', () => {
   it('creates a minimal $u runtime', () => {

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import { createAppAuthClient } from '../src/api/appAuth'
-import type { AppRequestOptions } from '../src/api/http'
+import type { AppRequestOptions } from '../src/lib/http'
 import type { AppLoginResult } from '../src/types/auth'
 import type { AppUser } from '../src/types/user'
 

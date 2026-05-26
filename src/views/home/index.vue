@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
 import { useI18n } from 'vue-i18n'
 
-import { useSession } from '@/composables/useSession'
+import { useSession } from '@/hooks/useSession'
 import { requireAuthenticatedPage } from '@/router/guards'
 
 const { t } = useI18n()

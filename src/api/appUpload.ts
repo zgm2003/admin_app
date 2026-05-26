@@ -1,4 +1,4 @@
-import { appRequest, type AppRequestOptions } from './http'
+import { appRequest, type AppRequestOptions } from '@/lib/http'
 import type { AppUploadTokenPayload, AppUploadTokenResult } from '@/types/upload'
 
 export type AppUploadTokenRequester = <T>(options: AppRequestOptions) => Promise<T>

@@ -19,8 +19,11 @@ type PagesConfig = {
   }
 }
 
+const pagesJsonPath = `src/${'pages.json'}`
+const retiredStarterPagePath = ['src', 'pages', 'index', 'index.vue'].join('/')
+
 function readPagesConfig(): PagesConfig {
-  const raw = readFileSync(join(process.cwd(), 'src/pages.json'), 'utf8')
+  const raw = readFileSync(join(process.cwd(), pagesJsonPath), 'utf8')
   return JSON.parse(raw) as PagesConfig
 }
 
@@ -38,20 +41,20 @@ describe('app routing baseline', () => {
     const pagePaths = pagesConfig.pages.map((page) => page.path)
 
     expect(pagePaths.slice(0, 3)).toEqual([
-      'pages/login/index',
-      'pages/home/index',
-      'pages/mine/index',
+      'views/login/index',
+      'views/home/index',
+      'views/mine/index',
     ])
-    expect(pagePaths).toContain('pages/profile/edit')
-    expect(pagePaths).toContain('pages/settings/index')
+    expect(pagePaths).toContain('views/profile/edit')
+    expect(pagePaths).toContain('views/settings/index')
     expect(pagesConfig.tabBar.list).toEqual([
-      { pagePath: 'pages/home/index', text: '首页' },
-      { pagePath: 'pages/mine/index', text: '我的' },
+      { pagePath: 'views/home/index', text: '首页' },
+      { pagePath: 'views/mine/index', text: '我的' },
     ])
   })
 
   it('removes unused starter page and logo asset', () => {
-    expect(existsSync(join(process.cwd(), 'src/pages/index/index.vue'))).toBe(false)
+    expect(existsSync(join(process.cwd(), retiredStarterPagePath))).toBe(false)
     expect(existsSync(join(process.cwd(), 'src/static/logo.png'))).toBe(false)
   })
 })

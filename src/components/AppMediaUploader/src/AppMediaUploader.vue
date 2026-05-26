@@ -2,12 +2,12 @@
 import { computed, nextTick, ref, shallowRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { uploadAppFileToCloud } from '@/lib/appUploadRuntime'
+import { uploadAppFileToCloud } from '@/lib/upload/appUploadRuntime'
 import {
   ensureAppMediaPermission,
   type AppMediaKind,
   type AppMediaSource,
-} from '@/lib/platform/appMediaPermission'
+} from '@/platform/app/appMediaPermission'
 
 interface UUploadFile {
   url?: string

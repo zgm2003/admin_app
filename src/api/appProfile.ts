@@ -1,4 +1,4 @@
-import { appRequest, type AppRequestOptions } from './http'
+import { appRequest, type AppRequestOptions } from '@/lib/http'
 import type {
   AppProfileResponse,
   AppProfileUpdatePayload,

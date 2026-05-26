@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 
-import { createSessionController } from '../src/stores/session'
-import type { AppAuthClient, SessionStorageAdapter } from '../src/stores/session'
+import { createSessionController } from '../src/store/session'
+import type { AppAuthClient, SessionStorageAdapter } from '../src/store/session'
 import type { AppUser } from '../src/types/user'
 
 function createMemoryStorage(initialToken: string | null = null): SessionStorageAdapter {

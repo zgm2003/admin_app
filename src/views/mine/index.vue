@@ -4,7 +4,7 @@ import { onShow } from '@dcloudio/uni-app'
 import { useI18n } from 'vue-i18n'
 
 import { appProfileClient } from '@/api/appProfile'
-import { useSession } from '@/composables/useSession'
+import { useSession } from '@/hooks/useSession'
 import { redirectToLogin, requireAuthenticatedPage } from '@/router/guards'
 import type { AppProfileResponse } from '@/types/user'
 
@@ -65,11 +65,11 @@ onShow(async () => {
 })
 
 function navigateToProfileEdit(): void {
-  uni.navigateTo({ url: '/pages/profile/edit' })
+  uni.navigateTo({ url: '/views/profile/edit' })
 }
 
 function navigateToSettings(): void {
-  uni.navigateTo({ url: '/pages/settings/index' })
+  uni.navigateTo({ url: '/views/settings/index' })
 }
 
 async function handleLogout() {

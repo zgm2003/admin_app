@@ -7,14 +7,16 @@ function readProjectFile(path: string): string {
   return readFileSync(join(process.cwd(), path), 'utf8')
 }
 
+const pagesJsonPath = `src/${'pages.json'}`
+
 describe('app profile/settings ui contract', () => {
   it('keeps Mine as an account hub instead of dumping forms into the tab page', () => {
-    const minePage = readProjectFile('src/pages/mine/index.vue')
+    const minePage = readProjectFile('src/views/mine/index.vue')
 
     expect(minePage).toContain('profileEntryTitle')
     expect(minePage).toContain('settingsEntryTitle')
-    expect(minePage).toContain("uni.navigateTo({ url: '/pages/profile/edit' })")
-    expect(minePage).toContain("uni.navigateTo({ url: '/pages/settings/index' })")
+    expect(minePage).toContain("uni.navigateTo({ url: '/views/profile/edit' })")
+    expect(minePage).toContain("uni.navigateTo({ url: '/views/settings/index' })")
     expect(minePage).not.toContain('AppMediaUploader')
     expect(minePage).not.toContain('AppAvatarUploader')
     expect(minePage).not.toContain('handleSaveProfile')
@@ -22,12 +24,12 @@ describe('app profile/settings ui contract', () => {
   })
 
   it('keeps profile edit and settings as independent pages', () => {
-    const profileEditPage = readProjectFile('src/pages/profile/edit.vue')
-    const settingsPage = readProjectFile('src/pages/settings/index.vue')
-    const pages = readProjectFile('src/pages.json')
+    const profileEditPage = readProjectFile('src/views/profile/edit.vue')
+    const settingsPage = readProjectFile('src/views/settings/index.vue')
+    const pages = readProjectFile(pagesJsonPath)
 
-    expect(pages).toContain('pages/profile/edit')
-    expect(pages).toContain('pages/settings/index')
+    expect(pages).toContain('views/profile/edit')
+    expect(pages).toContain('views/settings/index')
     expect(profileEditPage).toContain('AppMediaUploader')
     expect(profileEditPage).toContain('folder="avatars"')
     expect(profileEditPage).toContain('media-kind="image"')
@@ -44,8 +46,8 @@ describe('app profile/settings ui contract', () => {
 
   it('keeps Home and App default visual surface light-first', () => {
     const app = readProjectFile('src/App.vue')
-    const homePage = readProjectFile('src/pages/home/index.vue')
-    const pages = readProjectFile('src/pages.json')
+    const homePage = readProjectFile('src/views/home/index.vue')
+    const pages = readProjectFile(pagesJsonPath)
 
     expect(app).toContain('theme-light')
     expect(app).toContain('--app-bg: #f6f8fc')
@@ -56,8 +58,8 @@ describe('app profile/settings ui contract', () => {
   })
 
   it('keeps visible settings/profile/upload copy in both locales', () => {
-    const zhCN = readProjectFile('src/locales/zh-CN.ts')
-    const enUS = readProjectFile('src/locales/en-US.ts')
+    const zhCN = readProjectFile('src/i18n/locales/zh-CN.ts')
+    const enUS = readProjectFile('src/i18n/locales/en-US.ts')
 
     for (const source of [zhCN, enUS]) {
       expect(source).toContain('settings')

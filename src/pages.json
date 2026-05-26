@@ -1,31 +1,31 @@
 {
 	"pages": [
 		{
-			"path": "pages/login/index",
+			"path": "views/login/index",
 			"style": {
 				"navigationStyle": "custom"
 			}
 		},
 		{
-			"path": "pages/home/index",
+			"path": "views/home/index",
 			"style": {
 				"navigationStyle": "custom"
 			}
 		},
 		{
-			"path": "pages/mine/index",
+			"path": "views/mine/index",
 			"style": {
 				"navigationStyle": "custom"
 			}
 		},
 		{
-			"path": "pages/profile/edit",
+			"path": "views/profile/edit",
 			"style": {
 				"navigationStyle": "custom"
 			}
 		},
 		{
-			"path": "pages/settings/index",
+			"path": "views/settings/index",
 			"style": {
 				"navigationStyle": "custom"
 			}
@@ -45,11 +45,11 @@
 		"borderStyle": "white",
 		"list": [
 			{
-				"pagePath": "pages/home/index",
+				"pagePath": "views/home/index",
 				"text": "首页"
 			},
 			{
-				"pagePath": "pages/mine/index",
+				"pagePath": "views/mine/index",
 				"text": "我的"
 			}
 		]

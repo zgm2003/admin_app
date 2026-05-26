@@ -2,7 +2,7 @@ import { createSSRApp } from 'vue'
 
 import App from './App.vue'
 import { i18n } from './i18n'
-import { installUViewRuntime } from './plugins/uview-runtime'
+import { installUViewRuntime } from './platform/uview/runtime'
 
 export function createApp() {
   const app = createSSRApp(App)

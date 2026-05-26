@@ -1,6 +1,6 @@
 import { computed, reactive, readonly } from 'vue'
 
-import { APP_LOCALE_STORAGE_KEY, APP_THEME_STORAGE_KEY } from '@/constants/storage'
+import { APP_LOCALE_STORAGE_KEY, APP_THEME_STORAGE_KEY } from '@/enums/storage'
 import type { AppLocale, AppThemeMode } from '@/types/preferences'
 
 export interface PreferenceStorageAdapter {

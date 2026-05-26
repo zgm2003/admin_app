@@ -1,7 +1,7 @@
-import { session } from '@/composables/useSession'
+import { session } from '@/hooks/useSession'
 
-export const LOGIN_PAGE = '/pages/login/index'
-export const HOME_PAGE = '/pages/home/index'
+export const LOGIN_PAGE = '/views/login/index'
+export const HOME_PAGE = '/views/home/index'
 
 export interface AuthGuardSession {
   hydrate(): Promise<void>

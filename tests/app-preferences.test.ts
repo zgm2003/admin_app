@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { createAppPreferencesController } from '../src/stores/preferences'
+import { createAppPreferencesController } from '../src/store/preferences'
 import type { AppLocale, AppThemeMode } from '../src/types/preferences'
 
 function createMemoryPreferenceStorage(initial: Record<string, string> = {}) {

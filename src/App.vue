@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onLaunch } from '@dcloudio/uni-app'
 
-import { preferences } from '@/composables/usePreferences'
-import { session } from '@/composables/useSession'
+import { preferences } from '@/hooks/usePreferences'
+import { session } from '@/hooks/useSession'
 
 onLaunch(() => {
   preferences.hydrate()

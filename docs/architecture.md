@@ -17,28 +17,34 @@
 ## 组件与数据流
 
 ```text
-pages/login/index.vue  -> appAuthClient.loginConfig/captcha/sendCode
-pages/login/index.vue  -> useSession.login -> appAuthClient.login -> POST /auth/login
-pages/home/index.vue   -> requireAuthenticatedPage -> session.state.user
-pages/mine/index.vue   -> 账号总览 + 修改资料/设置入口 + logout
-pages/profile/edit.vue -> appProfileClient.profile/updateProfile + AppMediaUploader
+src/views/login/index.vue       -> appAuthClient.loginConfig/captcha/sendCode
+src/views/login/index.vue       -> useSession.login -> appAuthClient.login -> POST /auth/login
+src/views/home/index.vue        -> requireAuthenticatedPage -> session.state.user
+src/views/mine/index.vue        -> account hub + profile/settings entry + logout
+src/views/profile/edit.vue      -> appProfileClient.profile/updateProfile + AppMediaUploader
 AppMediaUploader -> App permission preflight on APP-PLUS, no native permission preflight on H5
 AppMediaUploader -> /api/app/v1/upload-tokens + COS-only upload runtime
-pages/settings/index.vue -> usePreferences language/theme + local cache management
+src/views/settings/index.vue    -> usePreferences language/theme + local cache management
 ```
 
 通用边界：
 
 ```text
-src/api/http.ts        # 统一响应解析、Authorization、platform=app header
-src/api/appAuth.ts     # app-auth 登录配置、验证码、登录、me、logout
-src/config/env.ts      # 默认直连 http://127.0.0.1:8080/api/app/v1，可用 VITE_APP_API_BASE_URL 覆盖
-src/stores/session.ts  # 依赖注入的 session controller，可测试
-src/stores/preferences.ts # 语言/白天黑夜偏好 controller，可测试
-src/utils/localCache.ts # 只清理 admin_app:cache/tmp，不清 token/user/locale/theme
-src/composables/useSession.ts # runtime singleton
-src/utils/storage.ts   # uni storage adapter
-src/locales/*          # 可见文案
+src/api/appAuth.ts              # app-auth 登录配置、验证码、登录、me、logout
+src/api/appProfile.ts           # profile read/update client
+src/api/appUpload.ts            # upload-token client
+src/lib/http/env.ts             # default http://192.168.5.20:8080/api/app/v1, override by VITE_APP_API_BASE_URL
+src/lib/http/index.ts           # 统一响应解析、Authorization、platform=app header
+src/lib/upload/appUploadRuntime.ts # COS-only upload runtime
+src/store/session.ts            # injectable session controller
+src/store/preferences.ts        # injectable preferences controller
+src/hooks/useSession.ts         # runtime singleton
+src/hooks/usePreferences.ts     # runtime singleton
+src/i18n/locales/*              # visible copy
+src/enums/storage.ts            # stable storage keys
+src/platform/*                  # App/uview runtime boundary
+src/utils/localCache.ts         # 只清理 admin_app:cache/tmp，不清 token/user/locale/theme
+src/utils/storage.ts            # uni storage adapter
 ```
 
 ## RBAC 第一版
@@ -46,7 +52,7 @@ src/locales/*          # 可见文案
 后端当前 App API 不返回菜单树、router 或 buttonCodes。因此第一版不伪造 admin RBAC，采用 app scope 登录态守卫：
 
 ```text
-未登录或 token 失效 -> reLaunch 到 /pages/login/index
+未登录或 token 失效 -> reLaunch 到 /views/login/index
 已登录 -> 允许进入 tabbar 首页/我的，并可从我的进入修改资料/设置详情页
 ```
 
@@ -66,7 +72,7 @@ H5 不做 native permission preflight，由浏览器文件选择器接管。App 
 
 登录页视觉参考 PC 后台登录页的移动端结构：背景氛围层、mobile brand header、白色 mobile sheet、登录方式 tabs、协议勾选和 captcha overlay。slide captcha 的内层验证器复用 `go-captcha-vue` 官方 `Slide` 组件和样式，不再手写 UniApp slider。
 
-产品层级：`我的` 是账号 hub，不承载长表单；修改资料独立在 `pages/profile/edit`；设置独立在 `pages/settings/index`，后续清理缓存、隐私、安全等能力继续放设置页扩展。
+产品层级：`我的` 是账号 hub，不承载长表单；修改资料独立在 `views/profile/edit`；设置独立在 `views/settings/index`，后续清理缓存、隐私、安全等能力继续放设置页扩展。
 
 ## 验证策略
 

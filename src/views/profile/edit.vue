@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n'
 
 import { appProfileClient } from '@/api/appProfile'
 import { AppMediaUploader } from '@/components/AppMediaUploader'
-import { useSession } from '@/composables/useSession'
+import { useSession } from '@/hooks/useSession'
 import { requireAuthenticatedPage } from '@/router/guards'
 import type { AppAddressOption, AppDictOption, AppProfile, AppProfileResponse } from '@/types/user'
 

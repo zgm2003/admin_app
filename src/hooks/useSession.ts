@@ -1,5 +1,5 @@
 import { appAuthClient } from '@/api/appAuth'
-import { createSessionController } from '@/stores/session'
+import { createSessionController } from '@/store/session'
 import { uniSessionStorage } from '@/utils/storage'
 
 export const session = createSessionController({

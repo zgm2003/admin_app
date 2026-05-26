@@ -9,7 +9,7 @@ function readProjectFile(path: string): string {
 
 describe('app login page mobile contract', () => {
   it('keeps the login page aligned with the PC mobile login structure', () => {
-    const loginPage = readProjectFile('src/pages/login/index.vue')
+    const loginPage = readProjectFile('src/views/login/index.vue')
     const captchaComponent = readProjectFile('src/components/AppCaptcha/src/AppSlideCaptcha.vue')
 
     expect(loginPage).toContain('login-mobile-sheet')
@@ -30,8 +30,8 @@ describe('app login page mobile contract', () => {
   })
 
   it('keeps login copy in both locales for visible mobile auth UI', () => {
-    const zhCN = readProjectFile('src/locales/zh-CN.ts')
-    const enUS = readProjectFile('src/locales/en-US.ts')
+    const zhCN = readProjectFile('src/i18n/locales/zh-CN.ts')
+    const enUS = readProjectFile('src/i18n/locales/en-US.ts')
 
     for (const source of [zhCN, enUS]) {
       expect(source).toContain('loginTypes')

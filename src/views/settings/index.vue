@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
 import { useI18n } from 'vue-i18n'
 
-import { usePreferences } from '@/composables/usePreferences'
+import { usePreferences } from '@/hooks/usePreferences'
 import { clearAppLocalCache } from '@/utils/localCache'
 import { requireAuthenticatedPage } from '@/router/guards'
 import type { AppLocale, AppThemeMode } from '@/types/preferences'

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import { createAppProfileClient } from '../src/api/appProfile'
 import { createAppUploadTokenClient } from '../src/api/appUpload'
-import type { AppRequestOptions } from '../src/api/http'
+import type { AppRequestOptions } from '../src/lib/http'
 
 describe('app profile and upload api clients', () => {
   it('uses the app profile namespace for current-user profile read and update', async () => {

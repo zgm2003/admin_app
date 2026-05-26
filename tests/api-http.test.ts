@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { getAuthToken, parseApiResponse } from '../src/api/http'
+import { getAuthToken, parseApiResponse } from '../src/lib/http'
 import type { ApiResponse } from '../src/types/api'
 
 describe('app api http boundary', () => {

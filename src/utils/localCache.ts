@@ -3,7 +3,7 @@ import {
   APP_LOCALE_STORAGE_KEY,
   APP_THEME_STORAGE_KEY,
   CURRENT_USER_STORAGE_KEY,
-} from '@/constants/storage'
+} from '@/enums/storage'
 
 export interface LocalCacheStorageAdapter {
   keys(): string[]

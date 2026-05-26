@@ -2,7 +2,7 @@ import { createI18n } from 'vue-i18n'
 
 import enUS from './locales/en-US'
 import zhCN from './locales/zh-CN'
-import type { AppLocale } from './types/preferences'
+import type { AppLocale } from '@/types/preferences'
 
 export type { AppLocale }
 

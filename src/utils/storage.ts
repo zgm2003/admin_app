@@ -1,5 +1,5 @@
-import { CURRENT_USER_STORAGE_KEY, ACCESS_TOKEN_STORAGE_KEY } from '@/constants/storage'
-import type { SessionStorageAdapter } from '@/stores/session'
+import { CURRENT_USER_STORAGE_KEY, ACCESS_TOKEN_STORAGE_KEY } from '@/enums/storage'
+import type { SessionStorageAdapter } from '@/store/session'
 import type { AppUser } from '@/types/user'
 
 function readJson<T>(key: string): T | null {
