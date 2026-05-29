@@ -33,7 +33,7 @@ src/views/settings/index.vue    -> usePreferences language/theme + local cache m
 src/api/appAuth.ts              # app-auth 登录配置、验证码、登录、me、logout
 src/api/appProfile.ts           # profile read/update client
 src/api/appUpload.ts            # upload-token client
-src/lib/http/env.ts             # default http://192.168.5.20:8080/api/app/v1, override by VITE_APP_API_BASE_URL
+src/lib/http/env.ts             # default http://127.0.0.1:8080/api/app/v1, override by VITE_APP_API_BASE_URL for LAN/prod
 src/lib/http/index.ts           # 统一响应解析、Authorization、platform=app header
 src/lib/upload/appUploadRuntime.ts # COS-only upload runtime
 src/store/session.ts            # injectable session controller

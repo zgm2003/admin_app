@@ -11,10 +11,12 @@ Base namespace:
 Default H5/backend base URL:
 
 ```text
-http://192.168.5.20:8080/api/app/v1
+http://127.0.0.1:8080/api/app/v1
 ```
 
-规则：前端不在 Vite/HBuilderX 上反代 `/api/app/v1`；`src/lib/http/env.ts` 默认直连 Go 后端，部署环境可用 `VITE_APP_API_BASE_URL` 覆盖，跨域由 Go 后端 CORS 负责。
+规则：前端不在 Vite/HBuilderX 上反代 `/api/app/v1`；`src/lib/http/env.ts` 默认直连本机 Go 后端，部署环境或
+LAN 真机调试必须用 `VITE_APP_API_BASE_URL` 覆盖为当前可访问的 Go backend origin，跨域由 Go 后端 CORS
+负责。
 
 ## Login config
 
@@ -178,7 +180,9 @@ Accept-Language: zh-CN
 
 ## H5 direct backend connection
 
-HBuilderX/Vite H5 页面直接请求 `http://192.168.5.20:8080/api/app/v1/*`。如果手工在浏览器地址栏访问 `http://localhost:5173/api/app/v1/*`，那仍然是 Vite 前端路径，不代表 Go 后端接口；接口 smoke 应打 `http://192.168.5.20:8080/api/app/v1/*`。
+HBuilderX/Vite H5 页面直接请求 `http://127.0.0.1:8080/api/app/v1/*`，或请求
+`VITE_APP_API_BASE_URL` 指向的 LAN/部署地址。不要手工访问 `http://localhost:5173/api/app/v1/*` 来判断后端，
+那仍然是 Vite 前端路径，不代表 Go 后端接口；接口 smoke 应打 Go 后端的实际 `/api/app/v1/*` 地址。
 
 ## Verification
 
